@@ -1,39 +1,49 @@
-const Discord = require("discord.js");
+const Discord = require('discord.js')
+const Bot = new Discord.Client()
 
-var prefix = "x/";
+var prefix = "/"
 
-var bot = new Discord.Client();
+Bot.on('ready', () => {
 
-bot.on("ready", function() {
-    bot.user.setGame("x/help");
-    console.log("le bot à bien été connecté");
+console.log("Bot prêt");
 });
 
-bot.on("message", async function(message) {
-    if(message.author.equals(bot.user)) return;
+Bot.on("message", async message => {
 
-    if(x/message.content.startsWith(PREFIX)) return;
+  if(command === prefix + "mute"){
 
-    var args = message.content.substring(prefix.lengh).split("";)
+    if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Vous n'avez pas les droits pour muter un utilisateur !");
 
-    switch(args[0].toLowerCase()) {
-        case "invite"
-        message.channel.send("", {
-            enbed:{
-                color:0xFF0000
-                author:
-                title:
-                fields[{
-                    name: "Lien d'invitation discord",
-                    value: "https://discord.gg/aZQ6Yez",
-                    inline: false
-                }],
-                footer: {
-                    footer: "Partager ce lien à tous vos amis",
-                },
-            }
-        })
-        break;
+    let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+    if(!toMute) return message.channel.send("Merci d'entrer un utilisateur !");
+    let role = message.guild.roles.find(r => r.name === "Utilisateurs mutés");
+    if(!role){
+      try {
+        role = await message.guild.createRole({
+          name: "Utilisateurs mutés",
+          color:"#000000",
+          permissions:[]
+        });
+
+        message.guild.channels.forEach(async (channel, id) => {
+          await channel.overwritePermissions(role, {
+            SEND_MESSAGES: false,
+            ADD_REACTIONS: false
+          });
+        });
+      } catch (e) {
+        console.log(e.stack)
+      }
     }
+
+    if(toMute.roles.has(role.id)) return message.channel.send('Cet utilisateur est déjà muté !');
+
+    await(toMute.addRole(role));
+    message.channel.send("Je l'ai muté !");
+
+    return;
+  }
+
 });
-bot.login(process.env.TOKEN);
+
+Bot.login(token_login);
