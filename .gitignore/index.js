@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const Bot = new Discord.Client()
 
+var token_login = "NDgxMTIxNDczNzIxNzk0NTYw.DlzIAQ.eoej6EWMGgb9vYAa9xSH4BU7oec"
 var prefix = "/"
 
 Bot.on('ready', () => {
