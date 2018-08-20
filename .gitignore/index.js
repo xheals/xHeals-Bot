@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 var bot = new Discord.Client()
 
 bot.on("ready", function() {
-    bot.user.setGame("xheals mon chef");
+    bot.user.setGame("xheals c'est mon chef");
     console.log("le bot à bien été connecté");
 });
 
