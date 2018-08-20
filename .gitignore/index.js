@@ -9,7 +9,8 @@ Bot.on('ready', () => {
 console.log("Bot prêt");
 });
 
-Bot.on("message", async message => {
+bot.on("ready", function() {
+    bot.user.setGame("/help");
 
   if(command === prefix + "mute"){
 
